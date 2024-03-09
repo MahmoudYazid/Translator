@@ -7,27 +7,27 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class onlineDataImplementation @Inject constructor(
     val TranslatorModel: Translator,
     val conditions: DownloadConditions
 ):contractOnlineData {
-    override suspend fun TranslateData(text: String): String {
-        return suspendCancellableCoroutine { continuation ->
-            TranslatorModel.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener {
-                    TranslatorModel.translate(text)
-                        .addOnSuccessListener { translatedText ->
-                            continuation.resume(translatedText)
-                        }
-                        .addOnFailureListener { exception ->
-                            continuation.resumeWithException(exception)
-                        }
-                }
-                .addOnFailureListener { exception ->
-                    continuation.resumeWithException(exception)
-                }
-        }
+    override suspend fun TranslateData(text: String): String = suspendCoroutine { continuation ->
+        TranslatorModel.downloadModelIfNeeded(conditions)
+            .addOnSuccessListener {
+                TranslatorModel.translate(text)
+                    .addOnSuccessListener { translatedText ->
+                        continuation.resume(translatedText)
+                    }
+                    .addOnFailureListener { exception ->
+                        continuation.resumeWithException(exception)
+                    }
+            }
+            .addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
     }
+
 
 }
