@@ -1,4 +1,15 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/white"></solid>
-    <corners android:radius="20dp"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#E0CCBE" /> <!-- Adjust the alpha and color to achieve the desired shadow effect -->
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+    <item android:top="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Adjust color as needed -->
+            <corners android:radius="20dp" />
+            <stroke android:color="#747264" android:width="2dp" />
+        </shape>
+    </item>
+</layer-list>
